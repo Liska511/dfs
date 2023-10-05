@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+long answer = 0, value = 0, prev_value = 0;
+
+
+void dfs(vector<int> graph[], int v, bool visited[] ) {
+     visited[v] = true;
+     for (auto x:graph[v]) {
+      if(!visited[x]) {
+          dfs(graph, x, visited);
+      }   
+     }
+     value++;
+ }
+
+
+int main () {
+    int n, p;
+    cin>>n>>p;
+    vector<int> graph[n];
+   for (int i=0; i<p; i++) {
+       int a, b;
+       cin>>a>>b;
+       graph[a].push_back(b);
+       graph[b].push_back(a);
+   }
+   bool visited[n];
+   memset(visited, false, n*sizeof(visited[0]));
+   for(int i=0; i<n; i++) {
+       if(!visited[i]) {
+           dfs(graph, i, visited);
+           answer = answer + (prev_value)*value;
+           prev_value = prev_value + value;
+           value = 0;
+       }
+   }
+   cout<<answer;
+   return 0;
+}
